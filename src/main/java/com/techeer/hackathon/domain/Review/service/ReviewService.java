@@ -30,12 +30,12 @@ public class ReviewService {
     }
 
     @Transactional
-    public List<Review> findAllRestaurant() {
+    public List<Review> findAllReview() {
         return REPOSITORY.findAll(); //전체 찾기
     }
 
     @Transactional
-    public void deleteRestaurant(Long id) {
+    public void deleteReview(Long id) {
         REPOSITORY.deleteById(id); //삭제
     }
 
@@ -51,7 +51,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public Review updateRestaurant(Long id, ReviewCreateRequestDto reviewCreateRequestDto) {
+    public Review updateReview(Long id, ReviewCreateRequestDto reviewCreateRequestDto) {
         Optional<Review> optionalReview = REPOSITORY.findById(id);
         if (!optionalReview.isPresent()) {
             throw new EntityNotFoundException(
@@ -63,4 +63,11 @@ public class ReviewService {
         review.setIndex(review.getIndex());
         return REPOSITORY.save(review);
     }
+
+//    @Transactional
+//        public List<Review> search(String keyword) {
+//        List<Review> reviewList = REPOSITORY.findByTitleContaining(keyword);
+//        return reviewList;
+//    }
+
 }

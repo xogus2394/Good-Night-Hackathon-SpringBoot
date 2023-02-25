@@ -28,9 +28,8 @@ public class RestaurantController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRestaurant (@PathVariable Long id) {
+    public void deleteRestaurant (@PathVariable Long id) {
         RESTAURANT_SERVICE.deleteRestaurant(id);
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -48,4 +47,5 @@ public class RestaurantController {
     public List<Restaurant> findAll() {
         return RESTAURANT_SERVICE.findAllRestaurant();
     }
+
 }

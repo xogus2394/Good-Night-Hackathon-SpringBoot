@@ -4,6 +4,8 @@ import com.techeer.hackathon.domain.Restaurant.dto.Request.RestaurantUpdateReque
 import com.techeer.hackathon.domain.Restaurant.entity.Restaurant;
 import com.techeer.hackathon.global.common.Timestamps;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
@@ -15,8 +17,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "Restaurant")
-public class Review {
+@Table(name = "review")
+@SQLDelete(sql = "UPDATE review SET deleted_at = CURRENT_TIMESTAMP where REVIEW_ID = ?")
+@Where(clause = "deleted=false")
+public class Review extends Timestamps {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,5 +32,8 @@ public class Review {
 
     @Column(name = "Review_detail")
     private String detail;
+
+    private boolean deleted = Boolean.FALSE;
+
 
 }
