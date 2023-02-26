@@ -56,11 +56,6 @@ public class ReviewController {
         return ResponseEntity.ok(REVIEW_SERVICE.updateReview(id, reviewCreateRequestDto));
     }
 
-    @GetMapping
-    public List<Review> findAll() {
-        return REVIEW_SERVICE.findAllReview();
-    }
-
 //    @GetMapping("/review/search")
 //        public String search(String keyword, Model model) {
 //        List<Review> searchList = REVIEW_SERVICE.search(keyword);
@@ -70,33 +65,23 @@ public class ReviewController {
 //        return "posts-search";
 //    }
 
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/page")
-    public Page<PagingDto> paging(@PageableDefault(size = 5, sort = "reviewId") Pageable pageRequest) {
+    @GetMapping
+    public ResponseEntity retrievePosts(Pageable pageable) {
+        Page<Review> posts = REVIEW_REPOSITORY.findAll(pageable);
+        return new ResponseEntity<>(posts,HttpStatus.OK);
+    }
 
-        Page<Review> postList = REVIEW_REPOSITORY.findAll(pageRequest);
+    @GetMapping("/post/page/search")
+    public Page<PagingDto> searchPaging(
+            @RequestParam String title,
+            @RequestParam String content,
+            @PageableDefault(size=5, sort="createdTime") Pageable pageRequest) {
+
+        Page<Review> postList = REVIEW_REPOSITORY.findAllSearch(title,content,pageRequest);
 
         Page<PagingDto> pagingList = postList.map(
                 review -> new PagingDto(
-                        review.getReviewId(), review.getIndex(),
-                        review.getDetail()
-                ));
-
-        return pagingList;
-    }
-
-    @CrossOrigin(origins = "*", allowedHeaders = "*")
-    @GetMapping("/search")
-    public Page<PagingDto> searchPaging(
-            @RequestParam String index,
-            @RequestParam String detail,
-            @PageableDefault(size = 5, sort = "reviewId") Pageable pageRequest) {
-
-        Page<Review> reviewList = REVIEW_REPOSITORY.findAllSearch(index, detail, pageRequest);
-
-        Page<PagingDto> pagingList = reviewList.map(
-                review -> new PagingDto(
-                        review.getReviewId(), review.getIndex(),
+                        review.getReviewId(),review.getIndex(),
                         review.getDetail()
                 ));
 

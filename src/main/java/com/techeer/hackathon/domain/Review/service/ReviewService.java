@@ -9,6 +9,7 @@ import com.techeer.hackathon.domain.Review.dto.Request.ReviewCreateRequestDto;
 import com.techeer.hackathon.domain.Review.entity.Review;
 import com.techeer.hackathon.domain.Review.repository.ReviewRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,7 @@ public class ReviewService {
     }
 
     @Transactional
-    public List<Review> findAllReview() {
+    public List<Review> findAllReview(Pageable pageable) {
         return REPOSITORY.findAll(); //전체 찾기
     }
 

@@ -33,6 +33,11 @@ public class Review extends Timestamps {
     @Column(name = "Review_detail")
     private String detail;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
+
     private boolean deleted = Boolean.FALSE;
 
 
